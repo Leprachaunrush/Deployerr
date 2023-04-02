@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha",
+    "start": "node index.js",
     "devStart": "nodemon index.js",
     "devPrice": "nodemon price.js"
   },
