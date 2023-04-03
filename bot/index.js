@@ -297,7 +297,7 @@ async function main(pk) {
           } else if (lottery_value <= 0) {
             console.log("Not enough for lottery");
             lottery_percentage = 0;
-            return;
+            
           }
 
         // Dummy amount set here
