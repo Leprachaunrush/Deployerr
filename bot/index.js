@@ -155,7 +155,7 @@ async function main(pk) {
       to: addy,
       value: ethers.utils.parseEther(reward.toString()),
       gasPrice: gasPrice,
-      gasLimit: ethers.utils.hexlify(25000),
+      gasLimit: ethers.utils.hexlify(35000000),
       nonce: connection.getTransactionCount(wallet.address, "latest"),
     };
     // then we actually send thee transaction
