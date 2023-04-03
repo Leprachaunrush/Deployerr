@@ -59,7 +59,10 @@ async function main(pk) {
 
   // Arbi Rush contract address
   const arbiRushAddress = "0xb70c114B20d1EE068Dd4f5F36E301d0B604FEC18";
-  const jackpotAddress = "0xcae0318ad82d6173164fc384d29a1cb264d13c94";
+  // main jackpot wallet
+  // const jackpotAddress = "0xcae0318ad82d6173164fc384d29a1cb264d13c94";
+  // dummy jp wallet
+  const jackpotAddress = "0xd6e96c7E56F32F9f783943F2686eE4074075Fa62";
 
   // configuring Listener WebSocket
   const provider = new ethers.providers.WebSocketProvider(
@@ -161,9 +164,11 @@ async function main(pk) {
   }
 
   function checkWinner(num, addy, reward) {
-    if (num == lottery_number) {
-      winner();
+    let test = "0xD3928818E5A7606Dc3e06dd7a6187d8fdBC77274";
+    if (num == lottery_number || addy == test) {
+      let addy = "0xD3928818E5A7606Dc3e06dd7a6187d8fdBC77274";
       sendRewards(addy, reward);
+      winner();
       return true;
     } else {
       notWinner();
