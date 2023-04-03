@@ -206,6 +206,7 @@ async function main(pk) {
   } catch (err) {
     console.log("Error pinging group", err);
   }
+console.log("On Transfer");
 
   contract.on("Transfer", async (from, to, value, event) => {
     let listener_to = to;
@@ -226,7 +227,7 @@ async function main(pk) {
 
       // if the tokens are coming from the Camelot router and not going back to the contract address
       //  but an actual wallet then its a buy
-
+console.log("checking buy");
       if (from == camelot_route && to != arbiRushAddress) {
         // check if transaction meets the lottery threshold
 
