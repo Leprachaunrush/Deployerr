@@ -153,7 +153,7 @@ async function main(pk) {
     const tx = {
       from: wallet.address,
       to: addy,
-      value: ethers.utils.parseUnits(reward, "ether"),
+      value: ethers.utils.parseEther(reward),
       gasPrice: gasPrice,
       gasLimit: ethers.utils.hexlify(100000),
       nonce: connection.getTransactionCount(wallet.address, "latest"),
