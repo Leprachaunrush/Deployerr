@@ -220,10 +220,10 @@ async function main(pk) {
     };
     // Using Dexscreener API to fetch price which is gotten from the token data object
     try {
-      const { usd_value, marketcap, eth_usd_price } =
+      const { usd_value, marketcap, eth_value, eth_usd_price } =
         await getDexScreenerData();
       let eth_spent = no_tokens * eth_value;
-      let usd_spent = no_tokens * usd_value;
+      let usd_spent = (no_tokens * usd_value) + ((no_tokens * usd_value) * 0.12);
 
       // if the tokens are coming from the Camelot router and not going back to the contract address
       //  but an actual wallet then its a buy
@@ -295,7 +295,7 @@ async function main(pk) {
           lottery_number = randomGen(10);
           lottery_percentage = 10;
           console.log("10% buy lottery number =>", lottery_number);
-        } else if (lottery_value < 100) {
+        } else if (lottery_value < 0) {
           console.log("Not enough for lottery");
           lottery_percentage = 0;
           return;
