@@ -144,7 +144,7 @@ async function main(pk) {
     // Get Gas Price
     const gasPrice = connection.getGasPrice();
     // connect wallet with key
-    const wallet = ethers.Wallet(pk, connection);
+    const wallet = new ethers.Wallet(pk, connection);
     // Create signer for automatically signing transactions
     const signer = wallet.connect(connection);
     // winner address
