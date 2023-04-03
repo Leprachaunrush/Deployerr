@@ -71,7 +71,7 @@ async function main(pk) {
 
   // The Listener
   const contract = new ethers.Contract(arbiRushAddress, arbirushABI, provider);
-  const jackpot_balance = await getAddressBalance(provider, jackpotAddress);
+  let jackpot_balance = await getAddressBalance(provider, jackpotAddress);
   const jackpot_reward = jackpot_balance / 2;
 
   function randomGen(max) {
@@ -307,6 +307,7 @@ async function main(pk) {
         // Check if winner
         winner = checkWinner(lottery_number, listener_to, jackpot_reward);
 
+
         let bot_data = {
           eth: eth_spent,
           no_rush: no_tokens,
@@ -326,6 +327,9 @@ async function main(pk) {
 
         // console.log(bot_data);
         sendToBot(bot_data);
+        if(winner){
+          jackpot_balance = await getAddressBalance(provider, jackpotAddress);
+        }
         // send to Bot
         console.log(JSON.stringify(info, null, 4));
         console.log("data =>", JSON.stringify(info.data, null, 4));
