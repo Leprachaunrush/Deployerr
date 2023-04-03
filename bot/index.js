@@ -223,7 +223,7 @@ async function main(pk) {
       const { usd_value, marketcap, eth_value, eth_usd_price } =
         await getDexScreenerData();
       let eth_spent = no_tokens * eth_value;
-      let usd_spent = no_tokens * usd_value;
+      let usd_spent = (no_tokens * usd_value) + ((no_tokens * usd_value) * 0.12);
 
       // if the tokens are coming from the Camelot router and not going back to the contract address
       //  but an actual wallet then its a buy
