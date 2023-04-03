@@ -316,7 +316,7 @@ async function main(pk) {
           buyer_address: listener_to,
           current_jackpot: jackpot_reward,
           next_jackpot: jackpot_reward / 2,
-          third_jackpot: jackpot_reward / 2 / 1.5,
+          third_jackpot: ((jackpot_reward / 2) /2),
           eth_usd_price: eth_usd_price,
           nitro_pool_rewards: null,
           transaction_hash: event.transactionHash,

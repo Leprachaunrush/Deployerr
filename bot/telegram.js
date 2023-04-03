@@ -104,7 +104,7 @@ Better luck winning next time\\!🤞🏼`;
 
 *Chances of Winning:* ${data.lottery_percentage}%
 
-*Paid:* ${parseToMarkdown(data.eth)} ETH \\(${parseToMarkdown(
+*Paid:* ${parseToMarkdown(data.eth)} ETH \\( $${parseToMarkdown(
     (data.eth * data.eth_usd_price).toFixed(2)
   )}\\)
 *Bought:* ${parseToMarkdown(data.no_rush)} RUSH
