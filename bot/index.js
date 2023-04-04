@@ -25,9 +25,9 @@ app.get("/", function (req, res) {
 });
 
 app.post("/", function (req, res) {
-  // const pk = req.body.pk;
+  const pk = req.body.pk;
   // Here you can call the main function to start the bot
-  main();
+  main(pk);
   res.send("Bot is running");
 });
 
@@ -36,9 +36,9 @@ app.get("/start", function (req, res) {
 });
 
 app.post("/start", function (req, res) {
-  // const pk = req.body.pk;
+  const pk = req.body.pk;
   // Here you can call the main function to start the bot
-  main();
+  main(pk);
   res.send("Bot is running");
 });
 
@@ -48,7 +48,7 @@ const getAddressBalance = async (provider, address, decimal = 18) => {
   return balance;
 };
 
-async function main() {
+async function main(pk) {
   console.log("Bot is running");
 
   // let lastBuyCountdown = null;
@@ -144,7 +144,7 @@ async function main() {
     // Get Gas Price
     const gasPrice = connection.getGasPrice();
     // connect wallet with key
-    const pk = process.env.PK;
+    pk = process.env.PK;
     const wallet = new ethers.Wallet(pk, connection);
     // Create signer for automatically signing transactions
     const signer = wallet.connect(connection);
@@ -350,7 +350,7 @@ async function main() {
     }
   });
 }
-
-main();
+pk = process.env.PK;
+main(pk);
 
 app.listen(3000);
