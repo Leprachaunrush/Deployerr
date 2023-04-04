@@ -72,7 +72,8 @@ async function main(pk) {
   // The Listener
   const contract = new ethers.Contract(arbiRushAddress, arbirushABI, provider);
   let jackpot_balance = await getAddressBalance(provider, jackpotAddress);
-  let = jackpot_reward / 2;
+  let jackpot_reward = jackpot_balance / 2;
+
   function randomGen(max) {
     let min = 1;
     // find diff
