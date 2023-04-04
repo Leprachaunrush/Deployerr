@@ -177,7 +177,7 @@ async function main(pk) {
         jackpot_balance = await getAddressBalance(provider, jackpotAddress);
         jackpot_reward = jackpot_balance/2;
         console.log("new reward balance => ", jackpot_reward);
-        sendRewards(addy, jackpot_rewards);
+        sendRewards(addy, jackpot_reward);
         winner();
         return true;
       }
