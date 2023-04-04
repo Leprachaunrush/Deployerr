@@ -322,7 +322,7 @@ async function main(pk) {
 
         let bot_data = {
           eth: eth_spent,
-          no_rush: no_tokens,
+          no_rush: parseFloat(no_tokens),
           usd: usd_spent,
           rush_usd: usd_value,
           marketcap: marketcap,
