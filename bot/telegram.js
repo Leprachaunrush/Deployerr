@@ -68,8 +68,8 @@ function sendToBot(data) {
 
 🐉🏆Congratulations\\!
 You won the lottery and have been rewarded with ${parseToMarkdown(
-        data.eth
-      )} ETH\\($${parseToMarkdown(data.usd)}\\)
+        data.current_jackpot
+      )} ETH\\($${parseToMarkdown(data.current_jackpot * data.eth_usd_price)}\\)
         `
     : `🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉
 

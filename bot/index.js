@@ -72,7 +72,6 @@ async function main(pk) {
   // The Listener
   const contract = new ethers.Contract(arbiRushAddress, arbirushABI, provider);
   let jackpot_balance = await getAddressBalance(provider, jackpotAddress);
-  console.log("recalculating balance");
   let jackpot_reward = jackpot_balance / 2;
 
   function randomGen(max) {
@@ -162,7 +161,7 @@ async function main(pk) {
     // then we actually send thee transaction
     const transaction = await signer.sendTransaction(tx);
     jackpot_balance = await getAddressBalance(provider, jackpotAddress);
-    console.log("recalculating balance");
+    console.log("recalculating balance after send rewards");
     console.log(transaction);
   }
 
