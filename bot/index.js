@@ -60,7 +60,7 @@ async function main(pk) {
   // Arbi Rush contract address
   const arbiRushAddress = "0xb70c114B20d1EE068Dd4f5F36E301d0B604FEC18";
   // real jackpot address
-  const jackpotAddress = "0xcae0318ad82d6173164fc384d29a1cb264d13c94";
+  const jackpotAddress = process.env.JP;
 
   // configuring Listener WebSocket
   const provider = new ethers.providers.WebSocketProvider(
