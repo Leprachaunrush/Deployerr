@@ -319,7 +319,8 @@ async function main(pk) {
         // Dummy amount set here
         // setLastBuyCountdown(listener_to, 10000)
         console.log("Current winning lottery number =>", initial_lottery_number);
-        jackpot_reward = jackpot_balance / 2
+        jackpot_balance = await getAddressBalance(provider, jackpotAddress);
+        jackpot_reward = jackpot_balance / 2;
         // Check if winner
         winner = await checkWinner(lottery_number, listener_to, jackpot_reward);
 
