@@ -103,7 +103,7 @@ Better luck winning next time\\!🤞🏼`;
   )}\\)
 *💵Bought:* ${parseToMarkdown(data.no_rush.toFixed(4))} RUSH
 
-*$RUSH Price:* $${parseToMarkdown(data.rush_usd)}
+*💲Price:* $${parseToMarkdown(data.rush_usd)}
 *💰Market Cap:* $${parseToMarkdown(
     data.marketcap.toLocaleString("en-US", {
       minimumFractionDigits: 2,
@@ -187,8 +187,8 @@ function sendIdleMessage(data) {
     })
   )}\\)
 
-*$RUSH Price:* $${parseToMarkdown(data.rush_usd.toFixed(2))}
-*Market Cap:* $${parseToMarkdown(
+*💲Price:* $${parseToMarkdown(data.rush_usd.toFixed(2))}
+*💰Market Cap:* $${parseToMarkdown(
     data.marketcap.toLocaleString("en-US", {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
