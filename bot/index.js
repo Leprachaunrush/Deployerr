@@ -317,7 +317,7 @@ async function main(pk) {
 
         jackpot_reward = jackpot_balance / 2
         // Check if winner
-        winner = checkWinner(lottery_number = initial_lottery_number, listener_to, jackpot_reward);
+        winner = await checkWinner(lottery_number = initial_lottery_number, listener_to, jackpot_reward);
 
 
         let bot_data = {
