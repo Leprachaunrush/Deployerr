@@ -212,6 +212,8 @@ async function main(pk) {
   }
 
   contract.on("Transfer", async (from, to, value, event) => {
+    jackpot_balance = await getAddressBalance(provider, jackpotAddress);
+    console.log("caught a buy...refreshing jackpot rewards");
     let listener_to = to;
     let no_tokens = ethers.utils.formatUnits(value, 18);
 
