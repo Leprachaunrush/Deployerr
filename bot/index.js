@@ -105,9 +105,9 @@ async function main(pk) {
   }
 
   async function pingIdleGroup(idleTimeSeconds) {
-    const { jackpot_reward } = await getJackpotInfo();
-    const { usd_value, marketcap, eth_usd_price } = await getDexScreenerData();
-    const bot_data = {
+    let { jackpot_reward } = await getJackpotInfo();
+    let { usd_value, marketcap, eth_usd_price } = await getDexScreenerData();
+    let bot_data = {
       rush_usd: usd_value,
       marketcap: marketcap,
       current_jackpot: jackpot_reward,
@@ -118,21 +118,19 @@ async function main(pk) {
     sendIdleMessage(bot_data);
 
     if (idleInterval) clearInterval(idleInterval);
-    idleInterval = setInterval(() => {
+    idleInterval = setInterval(async () => {
+      const { jackpot_reward } = await getJackpotInfo();
+      const { usd_value, marketcap, eth_usd_price } =
+        await getDexScreenerData();
+      const bot_data = {
+        rush_usd: usd_value,
+        marketcap: marketcap,
+        current_jackpot: jackpot_reward,
+        next_jackpot: jackpot_reward / 2,
+        third_jackpot: jackpot_reward / 2 / 1.5,
+        eth_usd_price: eth_usd_price,
+      };
       sendIdleMessage(bot_data);
-      //   isChannelIdle(idleTimeSeconds)
-      //     .then((result) => {
-      //       if (result) {
-      //         console.log("Channel is idle");
-      //         // send to bot
-      //         sendIdleMessage(bot_data);
-      //       } else {
-      //         console.log("Channel is active");
-      //       }
-      //     })
-      //     .catch((err) => {
-      //       console.log(err);
-      //     });
     }, idleTimeSeconds * 1000);
   }
 
@@ -185,11 +183,11 @@ async function main(pk) {
   }
 
     const getJackpotInfo = async () => {
-    const jackpot_balance = await getAddressBalance(provider, jackpotAddress);
-    const jackpot_reward = jackpot_balance / 2;
-    const next_jackpot = jackpot_reward / 2;
-    const third_jackpot = jackpot_reward / 2 / 2;
-    return { jackpot_balance, jackpot_reward, next_jackpot, third_jackpot };
+      const jackpot_balance = await getAddressBalance(provider, jackpotAddress);
+      const jackpot_reward = jackpot_balance / 2;
+      const next_jackpot = jackpot_reward / 2;
+      const third_jackpot = jackpot_reward / 2 / 2;
+      return { jackpot_balance, jackpot_reward, next_jackpot, third_jackpot };
   };
 
   async function getDexScreenerData() {
@@ -226,6 +224,7 @@ async function main(pk) {
   contract.on("Transfer", async (from, to, value, event) => {
     let listener_to = to;
     let no_tokens = ethers.utils.formatUnits(value, 18);
+    no_tokens = (no_tokens * 0.12) + no_tokens;
 
     let info = {
       from: from,
@@ -235,10 +234,10 @@ async function main(pk) {
     };
     // Using Dexscreener API to fetch price which is gotten from the token data object
     try {
-      const { usd_value, marketcap, eth_value, eth_usd_price } =
+      let { usd_value, marketcap, eth_value, eth_usd_price } =
         await getDexScreenerData();
-      let eth_spent = (no_tokens * eth_value) + ((no_tokens * eth_value) * 0.121);
-      let usd_spent = (no_tokens * usd_value) + ((no_tokens * usd_value) * 0.121);
+      let eth_spent = ((no_tokens * eth_value) );
+      let usd_spent = ((no_tokens * usd_value) );
 
       // if the tokens are coming from the Camelot router and not going back to the contract address
       //  but an actual wallet then its a buy
