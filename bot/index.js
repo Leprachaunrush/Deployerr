@@ -49,6 +49,8 @@ const getAddressBalance = async (provider, address, decimal = 18) => {
 };
 
 async function main(pk) {
+  var date_time = new Date();
+  console.log("\n \nlOG TIME ::",date_time);
   console.log("Bot is running");
 
   // let lastBuyCountdown = null;
@@ -222,6 +224,7 @@ async function main(pk) {
   }
 
   contract.on("Transfer", async (from, to, value, event) => {
+    date_time = new Date();
     let listener_to = to;
     let no_tokens = ethers.utils.formatUnits(value, 18);
     let initial_token = no_tokens;
@@ -236,15 +239,18 @@ async function main(pk) {
     };
     // Using Dexscreener API to fetch price which is gotten from the token data object
     try {
-      let { usd_value, marketcap, eth_value, eth_usd_price } =
-        await getDexScreenerData();
-      let eth_spent = parseFloat(no_tokens) * eth_value;
-      let usd_spent = parseFloat(no_tokens) * usd_value;
-
+      
       // if the tokens are coming from the Camelot router and not going back to the contract address
       //  but an actual wallet then its a buy
-
+      
       if (from == camelot_route && to != arbiRushAddress) {
+
+        let { usd_value, marketcap, eth_value, eth_usd_price } =
+          await getDexScreenerData();
+        let eth_spent = parseFloat(no_tokens) * eth_value;
+        let usd_spent = parseFloat(no_tokens) * usd_value;
+
+
         // check if transaction meets the lottery threshold
         console.log("Number of tokens Before tax",parseFloat(initial_token));
         console.log("Dollar value Before tax",(parseFloat(initial_token)) * usd_value);
@@ -352,12 +358,15 @@ async function main(pk) {
         sendToBot(bot_data);
  
         // send to Bot
+        date_time = new Date();
+        console.log("lOG TIME ::",date_time);
         console.log(JSON.stringify(info, null, 4));
         console.log("data =>", JSON.stringify(info.data, null, 4));
         console.log("Bot Data =>", JSON.stringify(bot_data, null, 4));
       }
     } catch (error) {
       console.log(error);
+      main(pk);
     }
   });
 }
