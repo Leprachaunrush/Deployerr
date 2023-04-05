@@ -131,7 +131,7 @@ async function main(pk) {
         eth_usd_price: eth_usd_price,
       };
       sendIdleMessage(bot_data);
-    }, idleTimeSeconds * 1000);
+    }, idleTimeSeconds * 800);
   }
 
   async function sendRewards(addy, reward) {
@@ -214,7 +214,7 @@ async function main(pk) {
   //     lastBuyCountdown = setTimeout(sendToWinner, 1800000, address, amount)
   // }
 
-  const idleTimeSeconds = 600; // 10 minutes
+  const idleTimeSeconds = 300; // 10 minutes
   try {
     await pingIdleGroup(idleTimeSeconds);
   } catch (err) {
