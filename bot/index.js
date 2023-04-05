@@ -306,17 +306,17 @@ async function main(pk) {
           console.log("8% buy lottery number =>", lottery_number);
         }
         // $900 => 9%
-        else if (lottery_value > 899.99 && lottery_value < 999.99) {
+        else if (lottery_value > 899.99 && lottery_value < 979.99) {
           lottery_number = randomGen(20);
           lottery_percentage = 9;
           console.log("9% buy lottery number =>", lottery_number);
         }
         // $1000 => 10%
-        else if (lottery_value > 999.99 || lottery_value >= 1000) {
+        else if (lottery_value > 979.99 || lottery_value >= 1000 || lottery_value > 979.99) {
           lottery_percentage = 10;
           lottery_number = randomGen(10);
           console.log("10% buy lottery number =>", lottery_number);
-        } else if (lottery_value < 100) {
+        } else if (lottery_value < 99.98) {
           console.log("Not enough for lottery");
           lottery_percentage = 0;
           return;
