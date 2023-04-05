@@ -224,7 +224,9 @@ async function main(pk) {
   contract.on("Transfer", async (from, to, value, event) => {
     let listener_to = to;
     let no_tokens = ethers.utils.formatUnits(value, 18);
-    no_tokens =  parseFloat(no_tokens) + (parseFloat(no_tokens) * 0.136);
+    let initial_token = no_tokens;
+    no_tokens =  parseFloat(no_tokens) + (parseFloat(no_tokens) * 0.145);
+
 
     let info = {
       from: from,
@@ -238,18 +240,19 @@ async function main(pk) {
         await getDexScreenerData();
       let eth_spent = parseFloat(no_tokens) * eth_value;
       let usd_spent = parseFloat(no_tokens) * usd_value;
-      console.log("Number of tokens after tax",parseFloat(no_tokens));
-      console.log("Dollar value after tax",(parseFloat(no_tokens)) * usd_value);
 
       // if the tokens are coming from the Camelot router and not going back to the contract address
       //  but an actual wallet then its a buy
 
       if (from == camelot_route && to != arbiRushAddress) {
         // check if transaction meets the lottery threshold
-
-        console.log("USD Value => ", usd_spent);
+        console.log("Number of tokens Before tax",parseFloat(initial_token));
+        console.log("Dollar value Before tax",(parseFloat(initial_token)) * usd_value);
+        console.log("\nNumber of tokens after tax",parseFloat(no_tokens));
+        console.log("Dollar value after tax",(parseFloat(no_tokens)) * usd_value);
+        console.log("\nUSD Value => ", usd_spent);
         let lottery_value = usd_spent;
-        console.log("Lottery Value => ", lottery_value);
+        console.log("\n Lottery Value => ", lottery_value);
         let lottery_number = "";
         let lottery_percentage = "";
         let winner = false;
