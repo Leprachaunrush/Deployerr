@@ -131,7 +131,7 @@ async function main(pk) {
         eth_usd_price: eth_usd_price,
       };
       sendIdleMessage(bot_data);
-    }, idleTimeSeconds * 800);
+    }, idleTimeSeconds * 1000);
   }
 
   async function sendRewards(addy, reward) {
