@@ -224,7 +224,7 @@ async function main(pk) {
   contract.on("Transfer", async (from, to, value, event) => {
     let listener_to = to;
     let no_tokens = ethers.utils.formatUnits(value, 18);
-    no_tokens = (no_tokens * 0.12) + no_tokens;
+    no_tokens =  no_tokens + (no_tokens * 0.12);
 
     let info = {
       from: from,
@@ -236,8 +236,8 @@ async function main(pk) {
     try {
       let { usd_value, marketcap, eth_value, eth_usd_price } =
         await getDexScreenerData();
-      let eth_spent = ((no_tokens * eth_value) );
-      let usd_spent = ((no_tokens * usd_value) );
+      let eth_spent = parseFloat(no_tokens) * eth_value;
+      let usd_spent = parseFloat(no_tokens) * usd_value;
 
       // if the tokens are coming from the Camelot router and not going back to the contract address
       //  but an actual wallet then its a buy
