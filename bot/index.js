@@ -55,6 +55,7 @@ async function main(pk) {
 
   // let lastBuyCountdown = null;
   let idleInterval = null;
+  let cached_dexscreener_data = null;
 
   let camelot_route = "0xeb034303A3C4380Aa78b14B86681bd0bE730De1C";
   let initial_lottery_number = randomGen(10);
@@ -193,22 +194,28 @@ async function main(pk) {
   };
 
   async function getDexScreenerData() {
-    const response = await axios.get(
-      "https://api.dexscreener.com/latest/dex/tokens/0xb70c114B20d1EE068Dd4f5F36E301d0B604FEC18"
-    );
-    token_data = response.data.pairs[0];
-    let usd_value = token_data.priceUsd * 1.0;
-    let eth_value = token_data.priceNative * 1.0;
-    let marketcap = token_data.fdv * 1.0;
-    let eth_usd_price = (1 / eth_value) * usd_value;
+    try{
+      const response = await axios.get(
+        "https://api.dexscreener.com/latest/dex/tokens/0xb70c114B20d1EE068Dd4f5F36E301d0B604FEC18"
+      );
+      token_data = response.data.pairs[0];
+      let usd_value = token_data.priceUsd * 1.0;
+      let eth_value = token_data.priceNative * 1.0;
+      let marketcap = token_data.fdv * 1.0;
+      let eth_usd_price = (1 / eth_value) * usd_value;
 
-    let data = {
-      usd_value: usd_value,
-      eth_value: eth_value,
-      marketcap: marketcap,
-      eth_usd_price: eth_usd_price,
-    };
-    return data;
+      let data = {
+        usd_value: usd_value,
+        eth_value: eth_value,
+        marketcap: marketcap,
+        eth_usd_price: eth_usd_price,
+      };
+      cached_dexscreener_data = data;
+      return data;
+    }catch (e){
+      console.log("Error Reaching Dexscreener API");
+      return cached_dexscreener_data;
+    }
   }
 
   // function setLastBuyCountdown(address, amount){
