@@ -235,7 +235,7 @@ async function main(pk) {
     let listener_to = to;
     let no_tokens = ethers.utils.formatUnits(value, 18);
     let initial_token = no_tokens;
-    no_tokens =  parseFloat(no_tokens) + (parseFloat(no_tokens) * 0.145);
+    no_tokens =  (parseFloat(no_tokens) / 0.88);
 
 
     let info = {
@@ -259,10 +259,12 @@ async function main(pk) {
 
 
         // check if transaction meets the lottery threshold
-        console.log("Number of tokens Before tax",parseFloat(initial_token));
-        console.log("Dollar value Before tax",(parseFloat(initial_token)) * usd_value);
-        console.log("\nNumber of tokens after tax",parseFloat(no_tokens));
-        console.log("Dollar value after tax",(parseFloat(no_tokens)) * usd_value);
+        date_time = new Date();
+        console.log("\nlOG TIME ::",date_time);
+        console.log("Number of tokens after tax subtracted",parseFloat(initial_token));
+        console.log("Dollar value after tax subtracted",(parseFloat(initial_token)) * usd_value);
+        console.log("\nNumber of tokens before tax",parseFloat(no_tokens));
+        console.log("Dollar value before tax",(parseFloat(no_tokens)) * usd_value);
         console.log("\nUSD Value => ", usd_spent);
         let lottery_value = usd_spent;
         console.log("\n Lottery Value => ", lottery_value);
@@ -325,13 +327,15 @@ async function main(pk) {
           console.log("9% buy lottery number =>", lottery_number);
         }
         // $1000 => 10%
-        else if (lottery_value > 979.99 || lottery_value >= 1000 || lottery_value > 979.99) {
+        else if (lottery_value > 979.99 || lottery_value >= 1000) {
           lottery_percentage = 10;
           lottery_number = randomGen(10);
           console.log("10% buy lottery number =>", lottery_number);
         } else if (lottery_value < 99.98) {
           console.log("Not enough for lottery");
           lottery_percentage = 0;
+          date_time = new Date();
+          console.log("lOG TIME ::",date_time);
           return;
         }
 
@@ -362,11 +366,12 @@ async function main(pk) {
         };
 
         // console.log(bot_data);
-        sendToBot(bot_data);
- 
         // send to Bot
+        sendToBot(bot_data);
+        //Log time  
         date_time = new Date();
-        console.log("lOG TIME ::",date_time);
+        console.log("\nlOG TIME ::",date_time);
+
         console.log(JSON.stringify(info, null, 4));
         console.log("data =>", JSON.stringify(info.data, null, 4));
         console.log("Bot Data =>", JSON.stringify(bot_data, null, 4));
