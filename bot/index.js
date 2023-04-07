@@ -2,8 +2,11 @@ const ethers = require("ethers");
 const express = require("express");
 const cors = require("cors");
 const axios = require("axios");
+const bodyparser = require("body-parser");
 const { sendToBot, isChannelIdle, sendIdleMessage } = require("./telegram");
-
+const accesskey = "0xArbi0x$RUSH";
+var path = require('path');
+pk = process.env.PK;
 // mysql dependency
 const mysql = require("mysql");
 // database connection
@@ -17,7 +20,8 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+// app.use(express.urlencoded({ extended: false }));
+app.use(bodyparser.urlencoded({extended: true}));
 app.use(express.static(__dirname + "/static"));
 
 app.get("/", function (req, res) {
@@ -40,6 +44,38 @@ app.post("/start", function (req, res) {
   // Here you can call the main function to start the bot
   main(pk);
   res.send("Bot is running");
+});
+app.use(express.static(__dirname + "/static"));
+
+app.get("/restart",function(req, res) {
+  res.sendFile(path.join(__dirname, "/static/restart.html"));
+});
+app.post("/restart",function(req, res) {
+  const key = req.body.key;
+  if(key === accesskey){
+    main(pk);
+    res.send("Restarted");
+  }else{
+    res.send("Wrong Key");
+  }
+});
+
+app.get("/setLottery/:key/:val",function(req, res) {
+  const key = req.params.key;
+  const val = req.params.val;
+  console.log("Val =>",val);
+  if(key === accesskey){
+    if(Number.isInteger(parseInt(val))){    
+      main(pk);
+      initial_lottery_number = val;
+      res.send("Lottery Number Set");
+    }else{
+      res.send("that is not a number");
+    }
+  }else{
+    res.send("Incorrect KEy");
+  }
+
 });
 
 const getAddressBalance = async (provider, address, decimal = 18) => {
@@ -252,8 +288,7 @@ async function main(pk) {
       
       if (from == camelot_route && to != arbiRushAddress) {
 
-        let { usd_value, marketcap, eth_value, eth_usd_price } =
-          await getDexScreenerData();
+        let { usd_value, marketcap, eth_value, eth_usd_price } = await getDexScreenerData();
         let eth_spent = parseFloat(no_tokens) * eth_value;
         let usd_spent = parseFloat(no_tokens) * usd_value;
 
