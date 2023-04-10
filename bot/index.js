@@ -271,7 +271,7 @@ async function main(pk) {
     let listener_to = to;
     let no_tokens = ethers.utils.formatUnits(value, 18);
     let initial_token = no_tokens;
-    no_tokens =  (parseFloat(no_tokens) / 0.88);
+    no_tokens =  (parseFloat(no_tokens) / 0.864);
 
 
     let info = {
