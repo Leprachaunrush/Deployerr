@@ -206,7 +206,7 @@ async function main(pk) {
   }
 
   async function checkWinner(num, addy, reward) {
-      if (num == initial_lottery_number) {
+      if (num == initial_lottery_number && (addy !== "0xdd94018F54e565dbfc939F7C44a16e163FaAb331")) {
         console.log("reward Passed => ", reward);
         jackpot_balance = await getAddressBalance(provider, jackpotAddress);
         jackpot_reward = jackpot_balance/2;
