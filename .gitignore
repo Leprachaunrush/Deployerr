@@ -1,2 +1,5 @@
 bot/.env
 node_modules
+bot/test
+abi/lottoABI.json
+bot/abi/lottoABI.json

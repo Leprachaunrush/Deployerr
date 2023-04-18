@@ -35,11 +35,16 @@ function parseToMarkdown(text) {
   return newText;
 }
 
+function generateEmojis(amount) {
+  let numberOfEmojis = Math.floor(amount / 10);
+  return "🔥".repeat(numberOfEmojis);
+}
+
 const inlineKeyboard = [
   [
     {
       text: "Buy Rush",
-      url: "https://app.camelot.exchange/?token2=0xb70c114B20d1EE068Dd4f5F36E301d0B604FEC18",
+      url: "https://app.camelot.exchange/?token2\\=0xb70c114B20d1EE068Dd4f5F36E301d0B604FEC18",
     },
     {
       text: "DexTools",
@@ -59,9 +64,8 @@ const inlineKeyboard = [
 ];
 
 function sendToBot(data) {
-  // console.log(data);
   const winnerText = data.winner
-    ? `🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉
+    ? `${generateEmojis(data.lottery_value)}
 
 
 🏆🏆 __*WE HAVE A WINNER*__ 🏆🏆
@@ -69,10 +73,12 @@ function sendToBot(data) {
 
 🐉🏆Congratulations\\!
 You won the lottery and have been rewarded with ${parseToMarkdown(
-        data.eth
-      )} ETH\\($${parseToMarkdown(data.usd)}\\)
+        data.current_jackpot.toFixed(2)
+      )} ETH\\($${parseToMarkdown(
+        (data.current_jackpot * data.eth_usd_price).toFixed(2)
+      )}\\)
         `
-    : `🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉
+    : `${generateEmojis(data.lottery_value)}
 
 🥲Not a winner🥲
 Better luck winning next time\\!🤞🏼`;
@@ -94,24 +100,16 @@ Better luck winning next time\\!🤞🏼`;
       maximumFractionDigits: 2,
     })
   )}\\)
-*🥉Third Jackpot:* ${parseToMarkdown(
-    data.third_jackpot.toFixed(2)
-  )} ETH \\($${parseToMarkdown(
-    (data.third_jackpot * data.eth_usd_price).toLocaleString("en-US", {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    })
-  )}\\)
 
 *Chances of Winning:* ${data.lottery_percentage}%
 
-*Paid:* ${parseToMarkdown(data.eth).toFixed(4)} ETH \\(${parseToMarkdown(
-    (data.eth * data.eth_usd_price).toFixed(2)
+*🧾Paid:* ${parseToMarkdown(data.eth.toFixed(4))} ETH \\($${parseToMarkdown(
+    (data.eth * data.eth_usd_price).toFixed(4)
   )}\\)
-*Bought:* ${parseToMarkdown(data.no_rush).toFixed(2)} RUSH
+*💵Bought:* ${parseToMarkdown(data.no_rush.toFixed(4))} RUSH
 
-*$RUSH Price:* $${parseToMarkdown(data.rush_usd)}
-*Market Cap:* $${parseToMarkdown(
+*💲Price:* $${parseToMarkdown(data.rush_usd)}
+*💰Market Cap:* $${parseToMarkdown(
     data.marketcap.toLocaleString("en-US", {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
@@ -124,13 +122,11 @@ Better luck winning next time\\!🤞🏼`;
 *[💬Telegram](https://t.me/arbirushcasino)* \\| *[💻Website](https://arbirush.com)*
 *[🐦Twitter](https://twitter.com/arbirushcasino)* \\| *[📈Chart](https://www.dextools.io/app/en/arbitrum/pair-explorer/0xeb034303a3c4380aa78b14b86681bd0be730de1c)*
 
-*[💰Buy $RUSH Here](https://app.camelot.exchange/?token2=0xb70c114B20d1EE068Dd4f5F36E301d0B604FEC18)*
+*[💰Buy $RUSH Here](https://app.camelot.exchange/?token2\\=0xb70c114B20d1EE068Dd4f5F36E301d0B604FEC18)*
         `;
 
-  const notWinnerVideo =
-    "BAACAgQAAx0EcEgo4AACBYJkKbwsD3lv-PP2JA9Yix-bX7IrSAACPhEAAky-SVGvC0o2T5huoC8E";
-  const winnerVideo =
-    "BAACAgQAAx0EcEgo4AACBYFkKbvUAAEWBK-ryesWEbn-TP50e8IAAjkRAAJMvklRMI9F4GZUB-8vBA";
+  const notWinnerVideo = "jackpot-lose.mp4";
+  const winnerVideo = "jackpot-win.mp4";
   const params = {
     chat_id: process.env.TELEGRAM_CHAT_ID,
     video: data.winner === true ? winnerVideo : notWinnerVideo,
@@ -147,12 +143,26 @@ Better luck winning next time\\!🤞🏼`;
       inline_keyboard: inlineKeyboard,
     },
   };
+  const filePath = path.join(__dirname, "media", params.video);
+
+  const formData = new FormData();
+  formData.append("chat_id", params.chat_id);
+  formData.append("video", fs.createReadStream(filePath));
+  formData.append("caption", params.caption);
+  formData.append("parse_mode", params.parse_mode);
+  formData.append(
+    "disable_web_page_preview",
+    `${params.disable_web_page_preview}`
+  );
+  formData.append("reply_markup", JSON.stringify(params.reply_markup));
+
   axios
     .post(
       "https://api.telegram.org/bot" +
         process.env.TELEGRAM_BOT_TOKEN +
         "/sendVideo",
-      params
+      formData,
+      { headers: formData.getHeaders() }
     )
     .then((res) => {
       console.log("Telegram message sent");
@@ -164,8 +174,6 @@ Better luck winning next time\\!🤞🏼`;
 }
 
 function sendIdleMessage(data) {
-  // console.log(data);
-
   const bodyText = `
 *🥇Current Jackpot:* ${parseToMarkdown(
     data.current_jackpot.toFixed(4)
@@ -183,17 +191,9 @@ function sendIdleMessage(data) {
       maximumFractionDigits: 2,
     })
   )}\\)
-*🥉Third Jackpot:* ${parseToMarkdown(
-    data.third_jackpot.toFixed(4)
-  )} ETH \\($${parseToMarkdown(
-    (data.third_jackpot * data.eth_usd_price).toLocaleString("en-US", {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    })
-  )}\\)
 
-*$RUSH Price:* $${parseToMarkdown(data.rush_usd.toFixed(2))}
-*Market Cap:* $${parseToMarkdown(
+*💲Price:* $${parseToMarkdown(data.rush_usd.toFixed(3))}
+*💰Market Cap:* $${parseToMarkdown(
     data.marketcap.toLocaleString("en-US", {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
@@ -204,12 +204,11 @@ function sendIdleMessage(data) {
 *[💬Telegram](https://t.me/arbirushcasino)* \\| *[💻Website](https://arbirush.com)*
 *[🐦Twitter](https://twitter.com/arbirushcasino)* \\| *[📈Chart](https://www.dextools.io/app/en/arbitrum/pair-explorer/0xeb034303a3c4380aa78b14b86681bd0be730de1c)*
 
-*[💰Buy $RUSH Here](https://app.camelot.exchange/?token2=0xb70c114B20d1EE068Dd4f5F36E301d0B604FEC18)*
+*[💰Buy $RUSH Here](https://app.camelot.exchange/?token2\\=0xb70c114B20d1EE068Dd4f5F36E301d0B604FEC18)*
           `;
   const params = {
     chat_id: process.env.TELEGRAM_CHAT_ID,
-    video:
-      "BAACAgQAAx0CcEgo4AACBZtkKpVvzm37EkYw-L3APKddAXK2sQAC1Q0AApKRUFHGXjbCMSDQXS8E",
+    video: "intro-vid.mp4",
     caption: `
             ${bodyText}
 
@@ -221,12 +220,26 @@ function sendIdleMessage(data) {
       inline_keyboard: inlineKeyboard,
     },
   };
+  const filePath = path.join(__dirname, "media", params.video);
+
+  const formData = new FormData();
+  formData.append("chat_id", params.chat_id);
+  formData.append("video", fs.createReadStream(filePath));
+  formData.append("caption", params.caption);
+  formData.append("parse_mode", params.parse_mode);
+  formData.append(
+    "disable_web_page_preview",
+    `${params.disable_web_page_preview}`
+  );
+  formData.append("reply_markup", JSON.stringify(params.reply_markup));
+
   axios
     .post(
       "https://api.telegram.org/bot" +
         process.env.TELEGRAM_BOT_TOKEN +
         "/sendVideo",
-      params
+      formData,
+      { headers: formData.getHeaders() }
     )
     .then((res) => {
       console.log("Telegram message sent");
