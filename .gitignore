@@ -1,4 +1,6 @@
-bot/.env
-node_modules
+node_modules/
+.env
+mysell
+res
 bot/test
 *.log

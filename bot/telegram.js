@@ -2,6 +2,8 @@ const axios = require("axios");
 const path = require("path");
 const fs = require("fs");
 const FormData = require("form-data");
+const logger = require("./utils/logger");
+
 require("dotenv").config();
 
 function parseToMarkdown(text) {
@@ -35,32 +37,37 @@ function parseToMarkdown(text) {
   return newText;
 }
 
+function generateEmojis(amount) {
+  let numberOfEmojis = Math.floor(amount / 10);
+  return "🔥".repeat(numberOfEmojis);
+}
+
 const inlineKeyboard = [
   [
     {
-      text: "Buy Rush",
-      url: "https://app.camelot.exchange/?token2\\=0xb70c114B20d1EE068Dd4f5F36E301d0B604FEC18",
+      text: "Buy ROYALE",
+      url: "https://www.sushi.com/swap?fromChainId=42161&fromCurrency=0x259aF8C0989212Ad65A5fced4B976c72FBB758B9&toChainId=42161&toCurrency=NATIVE&amount=12192.930462149",
     },
     {
       text: "DexTools",
-      url: "https://www.dextools.io/app/en/arbitrum/pair-explorer/0xeb034303a3c4380aa78b14b86681bd0be730de1c",
+      url: "https://www.dextools.io/app/en/arbitrum/pair-explorer/0x1144bcc225335b07b1239c78e9801164c4419e38",
     },
   ],
   [
     {
       text: "Whitepaper",
-      url: "https://arbirush.com/whitepaper/",
+      url: "https://phoenixroyale.com/whitepaper/",
     },
     {
       text: "Dexscreener",
-      url: "https://dexscreener.com/arbitrum/0xeb034303a3c4380aa78b14b86681bd0be730de1c",
+      url: "https://dexscreener.com/arbitrum/0x1144bcc225335b07b1239c78e9801164c4419e38",
     },
   ],
 ];
 
 function sendToBot(data) {
   const winnerText = data.winner
-    ? `🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉
+    ? `${generateEmojis(data.usd_spent)}
 
 
 🏆🏆 __*WE HAVE A WINNER*__ 🏆🏆
@@ -73,7 +80,7 @@ You won the lottery and have been rewarded with ${parseToMarkdown(
         (data.current_jackpot * data.eth_usd_price).toFixed(2)
       )}\\)
         `
-    : `🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉
+    : `${generateEmojis(data.usd_spent)}
 
 🥲Not a winner🥲
 Better luck winning next time\\!🤞🏼`;
@@ -114,14 +121,14 @@ Better luck winning next time\\!🤞🏼`;
   const footerText = `
 *[👤Buyer](https://arbiscan.io/address/${data.buyer_address})* \\| *[🧾Transaction](https://arbiscan.io/tx/${data.transaction_hash})*
 
-*[💬Telegram](https://t.me/arbirushcasino)* \\| *[💻Website](https://arbirush.com)*
-*[🐦Twitter](https://twitter.com/arbirushcasino)* \\| *[📈Chart](https://www.dextools.io/app/en/arbitrum/pair-explorer/0xeb034303a3c4380aa78b14b86681bd0be730de1c)*
+*[💬Telegram](https://t.me/phoenixroyalecasino)* \\| *[💻Website](https://phoenixroyale.com)*
+*[🐦Twitter](https://twitter.com/phoenixroyaleL2)* \\| *[📈Chart](https://www.dextools.io/app/en/arbitrum/pair-explorer/0x1144bcc225335b07b1239c78e9801164c4419e38)*
 
-*[💰Buy $RUSH Here](https://app.camelot.exchange/?token2\\=0xb70c114B20d1EE068Dd4f5F36E301d0B604FEC18)*
+*[💰Buy $ROYALE Here](https://www.sushi.com/swap?fromChainId=42161&fromCurrency=0x259aF8C0989212Ad65A5fced4B976c72FBB758B9&toChainId=42161&toCurrency=NATIVE&amount=12192.930462149)* \\| *[💻dApp](https://dapp.phoenixroyale.com
         `;
 
-  const notWinnerVideo = "jackpot-lose.mp4";
-  const winnerVideo = "jackpot-win.mp4";
+  const notWinnerVideo = process.env.LOSE_VIDEO_ID;
+  const winnerVideo = process.env.WIN_VIDEO_ID;
   const params = {
     chat_id: process.env.TELEGRAM_CHAT_ID,
     video: data.winner === true ? winnerVideo : notWinnerVideo,
@@ -138,33 +145,19 @@ Better luck winning next time\\!🤞🏼`;
       inline_keyboard: inlineKeyboard,
     },
   };
-  const filePath = path.join(__dirname, "media", params.video);
-
-  const formData = new FormData();
-  formData.append("chat_id", params.chat_id);
-  formData.append("video", fs.createReadStream(filePath));
-  formData.append("caption", params.caption);
-  formData.append("parse_mode", params.parse_mode);
-  formData.append(
-    "disable_web_page_preview",
-    `${params.disable_web_page_preview}`
-  );
-  formData.append("reply_markup", JSON.stringify(params.reply_markup));
 
   axios
     .post(
       "https://api.telegram.org/bot" +
         process.env.TELEGRAM_BOT_TOKEN +
         "/sendVideo",
-      formData,
-      { headers: formData.getHeaders() }
+      params
     )
     .then((res) => {
-      console.log("Telegram message sent");
+      logger.info("Telegram message sent");
     })
     .catch((err) => {
-      console.log("Telegram message not sent");
-      console.log(err);
+      logger.error("Telegram message not sent", err);
     });
 }
 
@@ -196,14 +189,14 @@ function sendIdleMessage(data) {
   )}
         `;
   const footerText = `
-*[💬Telegram](https://t.me/arbirushcasino)* \\| *[💻Website](https://arbirush.com)*
-*[🐦Twitter](https://twitter.com/arbirushcasino)* \\| *[📈Chart](https://www.dextools.io/app/en/arbitrum/pair-explorer/0xeb034303a3c4380aa78b14b86681bd0be730de1c)*
+*[💬Telegram](https://t.me/phoenixroyalecasino)* \\| *[🌐Website](https://phoenixroyale.com)*
+*[🐦Twitter](https://twitter.com/phoenixroyaleL2)* \\| *[📈Chart](https://www.dextools.io/app/en/arbitrum/pair-explorer/0x1144bcc225335b07b1239c78e9801164c4419e38)*
 
-*[💰Buy $RUSH Here](https://app.camelot.exchange/?token2\\=0xb70c114B20d1EE068Dd4f5F36E301d0B604FEC18)*
+*[💰Buy $ROYALE Here](https://www.sushi.com/swap?fromChainId=42161&fromCurrency=0x259aF8C0989212Ad65A5fced4B976c72FBB758B9&toChainId=42161&toCurrency=NATIVE&amount=12192.930462149)* \\| *[💻dApp](https://dapp.phoenixroyale.com)*
           `;
   const params = {
     chat_id: process.env.TELEGRAM_CHAT_ID,
-    video: "intro-vid.mp4",
+    video: process.env.IDLE_VIDEO_ID,
     caption: `
             ${bodyText}
 
@@ -215,48 +208,20 @@ function sendIdleMessage(data) {
       inline_keyboard: inlineKeyboard,
     },
   };
-  const filePath = path.join(__dirname, "media", params.video);
-
-  const formData = new FormData();
-  formData.append("chat_id", params.chat_id);
-  formData.append("video", fs.createReadStream(filePath));
-  formData.append("caption", params.caption);
-  formData.append("parse_mode", params.parse_mode);
-  formData.append(
-    "disable_web_page_preview",
-    `${params.disable_web_page_preview}`
-  );
-  formData.append("reply_markup", JSON.stringify(params.reply_markup));
-
   axios
     .post(
       "https://api.telegram.org/bot" +
         process.env.TELEGRAM_BOT_TOKEN +
         "/sendVideo",
-      formData,
-      { headers: formData.getHeaders() }
+      params
     )
     .then((res) => {
-      console.log("Telegram message sent");
+      logger.info("Idle Telegram message sent");
     })
     .catch((err) => {
-      console.log("Telegram message not sent");
-      console.log(err);
+      logger.error("Telegram message not sent", err);
     });
 }
-
-// sendIdleMessage({
-//   winner: true,
-//   eth: 0.0,
-//   usd: 0.0,
-//   lottery_percentage: 0.0,
-//   current_jackpot: 0.0,
-//   next_jackpot: 0.0,
-//   no_rush: 0.0,
-//   marketcap: 0.0,
-//   buyer_address: 0x00000,
-//   transaction_hash: 0x00000,
-// });
 
 // Check if the channel has been idle for over 5 minutes
 async function isChannelIdle(idleTimeSeconds = 300) {
@@ -289,13 +254,29 @@ const getVideoId = async (videoName) => {
   formData.append("chat_id", chatId);
   formData.append("document", fs.createReadStream(filePath));
 
-  axios
+  return axios
     .post(url, formData)
-    .then((data) => console.log(data.data.result.video.file_id))
+    .then((data) => {
+      return {
+        [videoName]: data.data.result.video.file_id,
+      };
+    })
     .catch((error) => console.error(error));
 };
 
-// getVideoId("intro-vid.mp4");
+const getAllVideoIds = async () => {
+  const videos = ["intro-vid.mp4", "jackpot-lose.mp4", "jackpot-win.mp4"];
+  const promiseArray = videos.map((v) => getVideoId(v));
+  try {
+    const result = await Promise.all(promiseArray);
+    return result;
+  } catch (err) {
+    console.log("Error getting all video ids");
+  }
+};
+
 exports.sendToBot = sendToBot;
 exports.sendIdleMessage = sendIdleMessage;
 exports.isChannelIdle = isChannelIdle;
+exports.getAllVideoIds = getAllVideoIds;
+// 
