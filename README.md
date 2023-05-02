@@ -1,2 +1,0 @@
-# Deployerr
-Arbirush Bot
