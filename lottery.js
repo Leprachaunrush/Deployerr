@@ -101,7 +101,7 @@ const getAddressBalance = async (provider, address, decimal = 18) => {
  * @param {String} pk
  */
 async function startLottery(pk) {
-  logger.info("Bot is running");
+  logger.info("Lottery Bot is running");
 
   let idleInterval = null;
   let cached_dexscreener_data = null;
