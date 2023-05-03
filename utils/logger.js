@@ -1,6 +1,6 @@
 const winston = require("winston");
 const { SPLAT } = require("triple-beam");
-const isObject = require("lodash/isobject");
+const isObject = require("lodash/isObject");
 const trimEnd = require("lodash/trimend");
 // Define your severity levels.
 // With them, You can create log files,
