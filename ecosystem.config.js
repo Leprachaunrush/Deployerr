@@ -10,7 +10,8 @@ module.exports = {
       env_production: {
         NODE_ENV: "production",
         PORT: 8080,
-        exec_mode: "cluster"
+        instances: "max",
+        exec_mode: "cluster",
       },
       env_development: {
         NODE_ENV: "development",
@@ -22,4 +23,3 @@ module.exports = {
     },
   ],
 };
-// 
