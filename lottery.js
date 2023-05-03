@@ -30,7 +30,7 @@ const winningChances = {
  */
 function amountCanParticipate(num) {
   if (num < 25) {
-    return false;
+    return true;
   }
   if (num === 25 || num === 50 || num === 75) {
     return true;
