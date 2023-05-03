@@ -9,7 +9,6 @@ module.exports = {
       // Env Specific Config
       env_production: {
         NODE_ENV: "production",
-        PORT: 8080,
         instances: "max",
         exec_mode: "cluster",
       },
