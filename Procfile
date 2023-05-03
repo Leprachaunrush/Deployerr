@@ -1,1 +1,1 @@
-web: pm2 start ecosystem.config.js --env production
+web: npm run start
