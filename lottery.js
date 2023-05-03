@@ -260,7 +260,7 @@ async function startLottery(pk) {
     }
   }
 
-  const idleTimeSeconds = 900; // 10 minutes
+  const idleTimeSeconds = 900; // 15 minutes
   try {
     await pingIdleGroup(idleTimeSeconds);
   } catch (err) {
@@ -295,7 +295,8 @@ async function startLottery(pk) {
       // if the tokens are coming from the Camelot router and not going back to the contract address
       //  but an actual wallet then its a buy
 
-      if (from == routerLiquidityPairAddress && to != tokenContactAddress) {
+      // if (from == routerLiquidityPairAddress && to != tokenContactAddress) {
+      if (from != tokenContactAddress) {
         // ##############################################################################################################################
         //  GETTING ETH VALUES
         const transactionData = await provider.getTransactionReceipt(
