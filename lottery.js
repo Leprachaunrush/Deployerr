@@ -404,7 +404,7 @@ async function startLottery(pk) {
   setInterval(() => {
     console.log("Triggering Dummy Event");
     triggerDummyEvent();
-  }, 1000 * 60 * 2);
+  }, 1000 * 60 * 30);
 }
 
 exports.startLottery = startLottery;
