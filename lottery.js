@@ -104,13 +104,6 @@ function amountCanParticipate(num) {
   if (num < 25) {
     return false;
   }
-  if (num >= 25 ) {
-    return true;
-  }
-
-  if (num < 25 ) {
-    return false;
-  }
   return true;
 }
 /**
@@ -120,9 +113,6 @@ function amountCanParticipate(num) {
  */
 function roundToNearestWinningChance(num) {
   if (!amountCanParticipate(num)) return;
-  if (num >= 25) {
-    return num;
-  }
   let winningChancesArray = Object.keys(winningChances);
   let closestChance = winningChancesArray.reduce((prev, curr) => {
     return Math.abs(curr - num) < Math.abs(prev - num) ? curr : prev;
@@ -137,15 +127,8 @@ function roundToNearestWinningChance(num) {
  * @returns
  */
 const getBuyLotteryPercentage = (buyAmount) => {
-  let lottery_percentage;
-  // if (buyAmount < 76) {
-  if (buyAmount > 24) {
-    lottery_percentage = winningChances[buyAmount] * 100;
-    logger.info(`${lottery_percentage} % buy lottery number => `, buyAmount);
-    return lottery_percentage;
-  }
   const winningChance = roundToNearestWinningChance(buyAmount);
-  lottery_percentage = winningChances[winningChance] * 100;
+  const lottery_percentage = winningChances[winningChance] * 100;
   logger.info(`${lottery_percentage} % buy lottery number => `, buyAmount);
   return lottery_percentage;
 };
@@ -348,7 +331,7 @@ async function startLottery(pk) {
   };
 
   async function transferEventHandler(from, to, value, event) {
-    date_time = new Date();
+    logger.info("Event Caught =>", from, to, value, event);
     const TAX_FEE = 0.136; // 13.6% tax fee
     const TAX_FEE_REVERSE = 1 - TAX_FEE;
     const TOKEN_DECIMALS = 9;
@@ -400,7 +383,7 @@ async function startLottery(pk) {
         let winner = false;
 
         if (!amountCanParticipate(usd_spent)) {
-          logger.info("Amount cannot participate");
+          logger.info("Amount cannot participate =>", usd_spent);
         } else {
           const lottery_percentage = getBuyLotteryPercentage(usd_spent);
           winner = checkLotteryWin(lottery_percentage);
@@ -427,7 +410,7 @@ async function startLottery(pk) {
           };
 
           // send to Bot
-          sendToBot(bot_data);
+          await sendToBot(bot_data);
           db.addTransaction(bot_data);
 
           logger.info(JSON.stringify(info, null, 4));
@@ -458,7 +441,8 @@ async function startLottery(pk) {
       },
       blockNumber: 12345,
       transactionHash:
-        // "0xa197b1e81885a28a81b1c501fd28daf1b7240aaefbaf46df9dd3a04667c624e0",
+        // "0x30c773cb40c1cd2bc3d78fb5070c2a1d8e398e0f913790d6aeca01f766b48ea5", // $79
+      // "0xa197b1e81885a28a81b1c501fd28daf1b7240aaefbaf46df9dd3a04667c624e0", // $198
         "0x17da3ec319052b3410ccfa896c0fab558e0db1f1fd6e4196ba064456434b7a38",
     };
 
@@ -474,10 +458,10 @@ async function startLottery(pk) {
 
   // Uncomment this to trigger dummy buy events
 
-  triggerDummyEvent();
+  triggerDummyEvent(Math.random());
   setInterval(() => {
     console.log("Triggering Dummy Event");
-    triggerDummyEvent();
+    triggerDummyEvent(Math.random());
   }, 1000 * 60 * 30);
 }
 
