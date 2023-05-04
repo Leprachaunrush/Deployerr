@@ -65,13 +65,13 @@ const inlineKeyboard = [
   ],
 ];
 
-function sendToBot(data) {
+async function sendToBot(data) {
   const winnerText = data.winner
     ? `${generateEmojis(data.usd_spent)}
 
 
 🏆🏆 __*WE HAVE A WINNER*__ 🏆🏆
-*Chances of winning*: *${data.lottery_percentage}*%
+*Chances of winning*: *${parseToMarkdown(data.lottery_percentage)}*%
 
 🐉🏆Congratulations\\!
 You won the lottery and have been rewarded with ${parseToMarkdown(
@@ -103,7 +103,7 @@ Better luck winning next time\\!🤞🏼`;
     })
   )}\\)
 
-*Chances of Winning:* ${data.lottery_percentage}%
+*Chances of Winning:* ${parseToMarkdown(data.lottery_percentage)}%
 
 *🧾Paid:* ${parseToMarkdown(data.eth.toFixed(4))} ETH \\($${parseToMarkdown(
     (data.eth * data.eth_usd_price).toFixed(4)
@@ -124,7 +124,7 @@ Better luck winning next time\\!🤞🏼`;
 *[💬Telegram](https://t.me/phoenixroyalecasino)* \\| *[💻Website](https://phoenixroyale.com)*
 *[🐦Twitter](https://twitter.com/phoenixroyaleL2)* \\| *[📈Chart](https://www.dextools.io/app/en/arbitrum/pair-explorer/0x1144bcc225335b07b1239c78e9801164c4419e38)*
 
-*[💰Buy $ROYALE Here](https://www.sushi.com/swap?fromChainId=42161&fromCurrency=0x259aF8C0989212Ad65A5fced4B976c72FBB758B9&toChainId=42161&toCurrency=NATIVE&amount=12192.930462149)* \\| *[💻dApp](https://dapp.phoenixroyale.com
+*[💰Buy $ROYALE Here](https://www.sushi.com/swap?fromChainId=42161&fromCurrency=0x259aF8C0989212Ad65A5fced4B976c72FBB758B9&toChainId=42161&toCurrency=NATIVE&amount=12192.930462149)* \\| *[💻dApp](https://dapp.phoenixroyale.com)*
         `;
 
   const notWinnerVideo = process.env.LOSE_VIDEO_ID;
@@ -145,20 +145,19 @@ Better luck winning next time\\!🤞🏼`;
       inline_keyboard: inlineKeyboard,
     },
   };
-
-  axios
-    .post(
+  try {
+    const result = await axios.post(
       "https://api.telegram.org/bot" +
         process.env.TELEGRAM_BOT_TOKEN +
         "/sendVideo",
       params
-    )
-    .then((res) => {
-      logger.info("Telegram message sent");
-    })
-    .catch((err) => {
-      logger.error("Telegram message not sent", err);
-    });
+    );
+    logger.info("Telegram message sent");
+    return result;
+  } catch (err) {
+    console.log(err);
+    logger.error("Telegram message not sent", err);
+  }
 }
 
 function sendIdleMessage(data) {
@@ -279,4 +278,3 @@ exports.sendToBot = sendToBot;
 exports.sendIdleMessage = sendIdleMessage;
 exports.isChannelIdle = isChannelIdle;
 exports.getAllVideoIds = getAllVideoIds;
-// 
