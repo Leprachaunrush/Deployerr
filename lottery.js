@@ -107,7 +107,7 @@ async function startLottery(pk) {
   let cached_dexscreener_data = null;
   let cached_coingecko_data = null;
 
-  let routerLiquidityPairAddress = "0x1144bcc225335b07b1239c78e9801164c4419e38";
+  let routerLiquidityPairAddress || from == "0x1111111254EEB25477B68fb85Ed929f73A960582" = "0x1144bcc225335b07b1239c78e9801164c4419e38";
 
   // Token contract address
   const tokenContactAddress = "0x259aF8C0989212Ad65A5fced4B976c72FBB758B9";
@@ -295,7 +295,7 @@ async function startLottery(pk) {
       // if the tokens are coming from the Camelot router and not going back to the contract address
       //  but an actual wallet then its a buy
 
-      if (from == routerLiquidityPairAddress && to != tokenContactAddress) {
+      if (from == routerLiquidityPairAddress || to != routerLiquidityPairAddress && to != tokenContactAddress) {
       // if (from != tokenContactAddress) {
         // ##############################################################################################################################
         //  GETTING ETH VALUES
