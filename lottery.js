@@ -32,11 +32,11 @@ function amountCanParticipate(num) {
   if (num < 25) {
     return false;
   }
-  if (num === 25 || num === 50 || num === 75) {
+  if (num >= 25 ) {
     return true;
   }
 
-  if (num < 100 && num !== 25 && num !== 50 && num !== 75) {
+  if (num < 25 ) {
     return false;
   }
   return true;
@@ -48,7 +48,7 @@ function amountCanParticipate(num) {
  */
 function roundToNearestWinningChance(num) {
   if (!amountCanParticipate(num)) return;
-  if (num === 25 || num === 50 || num === 75) {
+  if (num >= 25) {
     return num;
   }
   let winningChancesArray = Object.keys(winningChances);
@@ -374,7 +374,7 @@ async function startLottery(pk) {
    * Triggers a dummy buy event
    * @param {Number} amount - The amount of tokens to buy in ETH
    */
-  const triggerDummyEvent = async (amount = 0.1) => {
+  const triggerDummyEvent = async (amount = 0.027) => {
     // define the event object
     const event = {
       address: "0x123...",
