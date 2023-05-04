@@ -66,7 +66,8 @@ function roundToNearestWinningChance(num) {
  */
 const getBuyLotteryPercentage = (buyAmount) => {
   let lottery_percentage;
-  if (buyAmount < 76) {
+  // if (buyAmount < 76) {
+  if (buyAmount < 100) {
     lottery_percentage = winningChances[buyAmount] * 100;
     logger.info(`${lottery_percentage} % buy lottery number => `, buyAmount);
     return lottery_percentage;
