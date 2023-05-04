@@ -30,7 +30,7 @@ const winningChances = {
  */
 function amountCanParticipate(num) {
   if (num < 25) {
-    return true;
+    return false;
   }
   if (num === 25 || num === 50 || num === 75) {
     return true;
@@ -295,8 +295,8 @@ async function startLottery(pk) {
       // if the tokens are coming from the Camelot router and not going back to the contract address
       //  but an actual wallet then its a buy
 
-      // if (from == routerLiquidityPairAddress && to != tokenContactAddress) {
-      if (from != tokenContactAddress) {
+      if (from == routerLiquidityPairAddress && to != tokenContactAddress) {
+      // if (from != tokenContactAddress) {
         // ##############################################################################################################################
         //  GETTING ETH VALUES
         const transactionData = await provider.getTransactionReceipt(
@@ -380,7 +380,7 @@ async function startLottery(pk) {
       address: "0x123...",
       args: {
         from: "0x1144bcc225335b07b1239c78e9801164c4419e38", // WETH LP
-        to: "0x66F8E80e9D0fA95330504b0520E6CCFf956c8D55",
+        to: "0xf406af325c6b361f040612142267ab8feac97f1f",
         value: ethers.utils.parseEther(amount.toString()),
       },
       blockNumber: 12345,
