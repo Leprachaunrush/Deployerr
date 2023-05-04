@@ -400,11 +400,11 @@ async function startLottery(pk) {
 
   // Uncomment this to trigger dummy buy events
 
-  // triggerDummyEvent();
-  // setInterval(() => {
-  //   console.log("Triggering Dummy Event");
-  //   triggerDummyEvent();
-  // }, 1000 * 60 * 5);
+  triggerDummyEvent();
+  setInterval(() => {
+    console.log("Triggering Dummy Event");
+    triggerDummyEvent();
+  }, 1000 * 60 * 2);
 }
 
 exports.startLottery = startLottery;
