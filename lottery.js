@@ -139,7 +139,7 @@ function roundToNearestWinningChance(num) {
 const getBuyLotteryPercentage = (buyAmount) => {
   let lottery_percentage;
   // if (buyAmount < 76) {
-  if (buyAmount < 100) {
+  if (buyAmount > 24) {
     lottery_percentage = winningChances[buyAmount] * 100;
     logger.info(`${lottery_percentage} % buy lottery number => `, buyAmount);
     return lottery_percentage;
@@ -458,7 +458,8 @@ async function startLottery(pk) {
       },
       blockNumber: 12345,
       transactionHash:
-        "0xa197b1e81885a28a81b1c501fd28daf1b7240aaefbaf46df9dd3a04667c624e0",
+        // "0xa197b1e81885a28a81b1c501fd28daf1b7240aaefbaf46df9dd3a04667c624e0",
+        "0x17da3ec319052b3410ccfa896c0fab558e0db1f1fd6e4196ba064456434b7a38",
     };
 
     // trigger a dummy event
