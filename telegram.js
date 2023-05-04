@@ -38,7 +38,7 @@ function parseToMarkdown(text) {
 }
 
 function generateEmojis(amount) {
-  let numberOfEmojis = Math.floor(amount / 10);
+  let numberOfEmojis = Math.floor(parseFloat(amount) / 10);
   return "🔥".repeat(numberOfEmojis);
 }
 
