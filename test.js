@@ -47,7 +47,7 @@ app.use(express.static(__dirname + "/static"));
 });
 async function get(){
 
-  const transactionData = await provider.getTransactionReceipt("0x7951a5b4d4abb67900effaf8bbb47ac12ff578e00505ba50e2e6cc658fe7789c");
+  const transactionData = await provider.getTransactionReceipt("0x5fe93997dbbf5e2499cb58ab718032573b7544134cebaca14579dd779c4fb6a0");
 
   console.log (JSON.stringify(transactionData,null,4));
   // console.log (JSON.stringify((Number(transactionData.logs[0].data)/(10 ** 18)),null,4));
