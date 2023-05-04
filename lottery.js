@@ -295,7 +295,7 @@ async function startLottery(pk) {
       // if the tokens are coming from the Camelot router and not going back to the contract address
       //  but an actual wallet then its a buy
 
-      if (from == routerLiquidityPairAddress || to != routerLiquidityPairAddress && to != tokenContactAddress || to != "0x1111111254eeb25477b68fb85ed929f73a960582") {
+      if ((from == routerLiquidityPairAddress || to != routerLiquidityPairAddress) && (to != tokenContactAddress || to != "0x1111111254eeb25477b68fb85ed929f73a960582"|| to != "0x64768A3a2453F1E8DE9e43e92D65Fc36E4c9872d" )) {
       // if (from != tokenContactAddress) {
         // ##############################################################################################################################
         //  GETTING ETH VALUES

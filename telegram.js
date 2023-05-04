@@ -108,7 +108,7 @@ Better luck winning next time\\!🤞🏼`;
 *🧾Paid:* ${parseToMarkdown(data.eth.toFixed(4))} ETH \\($${parseToMarkdown(
     (data.eth * data.eth_usd_price).toFixed(4)
   )}\\)
-*💵Bought:* ${parseToMarkdown(data.no_rush.toFixed(4))} RUSH
+*💵Bought:* ${parseToMarkdown(data.no_rush.toFixed(4))} ROYALE
 
 *💲Price:* $${parseToMarkdown(data.rush_usd)}
 *💰Market Cap:* $${parseToMarkdown(
