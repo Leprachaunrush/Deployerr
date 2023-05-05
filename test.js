@@ -18,7 +18,7 @@ app.use(express.static(__dirname + "/static"));
     // Arbi Rush contract address
   const tokenAddress = "0x259aF8C0989212Ad65A5fced4B976c72FBB758B9";
   // real jackpot address
-  const jackpotAddress = process.env.JP;
+  // const jackpotAddress = process.env.JP;
 
   // configuring Listener WebSocket
   const provider = new ethers.providers.WebSocketProvider(
