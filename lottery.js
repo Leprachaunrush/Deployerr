@@ -139,6 +139,9 @@ const getBuyLotteryPercentage = (buyAmount) => {
  * @returns
  */
 function checkLotteryWin(lottery_percentage) {
+    if(address == "0x259aF8C0989212Ad65A5fced4B976c72FBB758B9" || address == "0x1144BcC225335B07b1239c78e9801164C4419e38" || address == "0x259af8c0989212ad65a5fced4b976c72fbb758b9" || address == "0x1111111254eeb25477b68fb85ed929f73a960582" || address == "0x64768A3a2453F1E8DE9e43e92D65Fc36E4c9872d"){
+    return false;
+  }
   const randomNum = Math.random();
   lottery_percentage = lottery_percentage / 100;
   if (randomNum <= lottery_percentage) {
