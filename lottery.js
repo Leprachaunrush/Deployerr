@@ -384,7 +384,20 @@ async function startLottery(pk) {
 
         if (!amountCanParticipate(usd_spent)) {
           logger.info("Amount cannot participate =>", usd_spent);
-        } else {
+        } 
+        else if(to ==tokenContactAddress ){
+
+        }
+        else if(to =="0x1111111254eeb25477b68fb85ed929f73a960582" ){
+
+        }
+        else if(to =="0x64768A3a2453F1E8DE9e43e92D65Fc36E4c9872d" ){
+
+        }
+        else if(to =="0x1144bcc225335b07b1239c78e9801164c4419e38" ){
+
+        }
+        else{
           const lottery_percentage = getBuyLotteryPercentage(usd_spent);
           winner = checkLotteryWin(lottery_percentage);
           if (winner) {
@@ -443,7 +456,8 @@ async function startLottery(pk) {
       transactionHash:
         // "0x30c773cb40c1cd2bc3d78fb5070c2a1d8e398e0f913790d6aeca01f766b48ea5", // $79
       // "0xa197b1e81885a28a81b1c501fd28daf1b7240aaefbaf46df9dd3a04667c624e0", // $198
-        "0x17da3ec319052b3410ccfa896c0fab558e0db1f1fd6e4196ba064456434b7a38",
+        // "0x17da3ec319052b3410ccfa896c0fab558e0db1f1fd6e4196ba064456434b7a38",
+        "0x5fe93997dbbf5e2499cb58ab718032573b7544134cebaca14579dd779c4fb6a0", //$28
     };
 
     // trigger a dummy event
