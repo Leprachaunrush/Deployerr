@@ -139,9 +139,9 @@ const getBuyLotteryPercentage = (buyAmount) => {
  * @returns
  */
 function checkLotteryWin(lottery_percentage) {
-    if(address == "0x259aF8C0989212Ad65A5fced4B976c72FBB758B9" || address == "0x1144BcC225335B07b1239c78e9801164C4419e38" || address == "0x259af8c0989212ad65a5fced4b976c72fbb758b9" || address == "0x1111111254eeb25477b68fb85ed929f73a960582" || address == "0x64768A3a2453F1E8DE9e43e92D65Fc36E4c9872d"){
-    return false;
-  }
+  //   if(address == "0x259aF8C0989212Ad65A5fced4B976c72FBB758B9" || address == "0x1144BcC225335B07b1239c78e9801164C4419e38" || address == "0x259af8c0989212ad65a5fced4b976c72fbb758b9" || address == "0x1111111254eeb25477b68fb85ed929f73a960582" || address == "0x64768A3a2453F1E8DE9e43e92D65Fc36E4c9872d"){
+  //   return false;
+  // }
   const randomNum = Math.random();
   lottery_percentage = lottery_percentage / 100;
   if (randomNum <= lottery_percentage) {
@@ -216,10 +216,10 @@ async function startLottery(pk) {
    */
   async function sendRewards(address, reward) {
     // RPC Connection to connect wallet to Blockchain
-    if(address == "0x259aF8C0989212Ad65A5fced4B976c72FBB758B9" || address == "0x1144BcC225335B07b1239c78e9801164C4419e38" || address == "0x259af8c0989212ad65a5fced4b976c72fbb758b9" || address == "0x1111111254eeb25477b68fb85ed929f73a960582" || address == "0x64768A3a2453F1E8DE9e43e92D65Fc36E4c9872d"){
-      // address = process.env.JP;
-      return;
-    }
+    // if(address == "0x259aF8C0989212Ad65A5fced4B976c72FBB758B9" || address == "0x1144BcC225335B07b1239c78e9801164C4419e38" || address == "0x259af8c0989212ad65a5fced4b976c72fbb758b9" || address == "0x1111111254eeb25477b68fb85ed929f73a960582" || address == "0x64768A3a2453F1E8DE9e43e92D65Fc36E4c9872d"){
+    //   // address = process.env.JP;
+    //   return;
+    // }
     const connection = new ethers.providers.JsonRpcProvider(
       `https://arb-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_WEBSOCKET}`
     );
@@ -358,9 +358,10 @@ async function startLottery(pk) {
       // if the tokens are coming from the Camelot router and not going back to the contract address
       //  but an actual wallet then its a buy
 
-      if ((from == routerLiquidityPairAddress || to != routerLiquidityPairAddress || (from != "0x1111111254eeb25477b68fb85ed929f73a960582")) && ((to != tokenContactAddress) || (to != "0x1111111254eeb25477b68fb85ed929f73a960582") || (to != "0x64768A3a2453F1E8DE9e43e92D65Fc36E4c9872d") || to != ("0x1144bcc225335b07b1239c78e9801164c4419e38"))) {
+      // if ((from == routerLiquidityPairAddress || to != routerLiquidityPairAddress || (from != "0x1111111254eeb25477b68fb85ed929f73a960582")) && ((to != tokenContactAddress) || (to != "0x1111111254eeb25477b68fb85ed929f73a960582") || (to != "0x64768A3a2453F1E8DE9e43e92D65Fc36E4c9872d") || to != ("0x1144bcc225335b07b1239c78e9801164c4419e38"))) {
       // if (from != tokenContactAddress) {
       // if (from == routerLiquidityPairAddress && to != tokenContactAddress) {
+      if (from == routerLiquidityPairAddress && to != tokenContactAddress && to != "0x1144bcc225335b07b1239c78e9801164c4419e38") {
 
         // ##############################################################################################################################
         //  GETTING ETH VALUES
@@ -394,9 +395,9 @@ async function startLottery(pk) {
         if (!amountCanParticipate(usd_spent)) {
           logger.info("Amount cannot participate =>", usd_spent);
         } 
-        else if(to == "0x1144BcC225335B07b1239c78e9801164C4419e38" || from == "0x259af8c0989212ad65a5fced4b976c72fbb758b9" || to == "0x1111111254eeb25477b68fb85ed929f73a960582" || to ==tokenContactAddress || from =="0x1111111254eeb25477b68fb85ed929f73a960582" || from =="0x64768A3a2453F1E8DE9e43e92D65Fc36E4c9872d" || to == "0x64768A3a2453F1E8DE9e43e92D65Fc36E4c9872d" ){
+        // else if(to == "0x1144BcC225335B07b1239c78e9801164C4419e38" || from == "0x259af8c0989212ad65a5fced4b976c72fbb758b9" || to == "0x1111111254eeb25477b68fb85ed929f73a960582" || to ==tokenContactAddress || from =="0x1111111254eeb25477b68fb85ed929f73a960582" || from =="0x64768A3a2453F1E8DE9e43e92D65Fc36E4c9872d" || to == "0x64768A3a2453F1E8DE9e43e92D65Fc36E4c9872d" ){
 
-        }
+        // }
         else{
           const lottery_percentage = getBuyLotteryPercentage(usd_spent);
           winner = checkLotteryWin(lottery_percentage);
