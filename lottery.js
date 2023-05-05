@@ -256,8 +256,8 @@ async function startLottery(pk) {
     const REWARD_PERCENTAGE = 0.4; // 40% of jackpot goes to winner
 
     // Set max jackpot reward to $10k
-    if (jackpot_balance_usd > 10000) {
-      jackpot_balance = 10000 / eth_current_usd_price;
+    if (jackpot_balance_usd > 100000) {
+      jackpot_balance = 100000 / eth_current_usd_price;
     }
     const jackpot_reward = jackpot_balance * REWARD_PERCENTAGE;
     const next_jackpot = (jackpot_balance - jackpot_reward) * REWARD_PERCENTAGE;
