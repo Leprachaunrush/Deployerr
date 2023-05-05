@@ -351,9 +351,9 @@ async function startLottery(pk) {
       // if the tokens are coming from the Camelot router and not going back to the contract address
       //  but an actual wallet then its a buy
 
-      // if ((from == routerLiquidityPairAddress || to != routerLiquidityPairAddress || (from == "0x1111111254eeb25477b68fb85ed929f73a960582")) && ((to != tokenContactAddress || to != "0x1111111254eeb25477b68fb85ed929f73a960582") || (to != "0x64768A3a2453F1E8DE9e43e92D65Fc36E4c9872d" || to != "0x1144bcc225335b07b1239c78e9801164c4419e38"))) {
+      if ((from == routerLiquidityPairAddress || to != routerLiquidityPairAddress || (from != "0x1111111254eeb25477b68fb85ed929f73a960582")) && ((to != tokenContactAddress || to != "0x1111111254eeb25477b68fb85ed929f73a960582") || (to != "0x64768A3a2453F1E8DE9e43e92D65Fc36E4c9872d" || to != "0x1144bcc225335b07b1239c78e9801164c4419e38"))) {
       // if (from != tokenContactAddress) {
-      if (from == routerLiquidityPairAddress && to != tokenContactAddress) {
+      // if (from == routerLiquidityPairAddress && to != tokenContactAddress) {
 
         // ##############################################################################################################################
         //  GETTING ETH VALUES
@@ -465,11 +465,11 @@ async function startLottery(pk) {
 
   // Uncomment this to trigger dummy buy events
 
-  triggerDummyEvent(Math.random());
-  setInterval(() => {
-    console.log("Triggering Dummy Event");
-    triggerDummyEvent(Math.random());
-  }, 1000 * 60 * 30);
+  // triggerDummyEvent(Math.random());
+  // setInterval(() => {
+  //   console.log("Triggering Dummy Event");
+  //   triggerDummyEvent(Math.random());
+  // }, 1000 * 60 * 30);
 }
 
 exports.startLottery = startLottery;
