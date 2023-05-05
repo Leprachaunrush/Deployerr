@@ -387,16 +387,7 @@ async function startLottery(pk) {
         if (!amountCanParticipate(usd_spent)) {
           logger.info("Amount cannot participate =>", usd_spent);
         } 
-        else if(to ==tokenContactAddress ){
-
-        }
-        else if(to =="0x1111111254eeb25477b68fb85ed929f73a960582" ){
-
-        }
-        else if(to =="0x64768A3a2453F1E8DE9e43e92D65Fc36E4c9872d" ){
-
-        }
-        else if(to =="0x1144bcc225335b07b1239c78e9801164c4419e38" ){
+        else if(to ==tokenContactAddress || from =="0x1111111254eeb25477b68fb85ed929f73a960582" || from =="0x64768A3a2453F1E8DE9e43e92D65Fc36E4c9872d" ){
 
         }
         else{
