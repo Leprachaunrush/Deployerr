@@ -359,7 +359,7 @@ async function startLottery(pk) {
     }
   }, 1000 * 60);
 
-  const idleTimeSeconds = 3600; // 1 Hour
+  const idleTimeSeconds = 2700; // 1 Hour
   try {
     await pingIdleGroup(idleTimeSeconds);
   } catch (err) {
